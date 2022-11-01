@@ -199,12 +199,12 @@ Ahora en loadInfo(city = 'london') hacemos la solicitud http.
 Va hacer async y especificamos con un try-catch.
 ```jsx
 async function loadInfo(city = 'london') {
-    try {
+  try {
       
-    } catch (error) {
+  } catch (error) {
       
-    }
   }
+}
 ```
 Hacemos la solicitud  
 ```jsx
@@ -251,11 +251,47 @@ export default function WeatherApp() {
 }
 ```
 # Mostrar info recibida
-```
+```jsx
 return (
   <>
     <WeatherForm onChangeCity={handleChangeCity}/>
     {/* <div>{weather && weather[0].name}</div> */}
     <div>{weather && weather[0]?.name}</div>
   </>
-);```
+);
+```
+# Con weatherapi.com
+```jsx
+import { useState } from "react";
+import WeatherForm from "./WeatherForm";
+
+export default function WeatherApp() {
+  const [weather, setWeather] = useState(null);
+
+  async function loadInfo(city = 'London') {
+    try {
+      const request = await fetch(`${process.env.REACT_APP_URL}&key=${process.env.REACT_APP_KEY}&q=${city}`);
+
+      const json = await request.json();
+
+      setWeather(json);
+
+      console.log(json);
+    } catch (error) {
+      
+    }
+  }
+
+  function handleChangeCity(city) {
+    setWeather(null);
+    loadInfo(city);
+  }
+
+  return (
+    <>
+      <WeatherForm onChangeCity={handleChangeCity}/>
+      <div>{weather?.current.temp_c}</div>
+    </>
+  );
+}
+```
