@@ -223,8 +223,7 @@ export default function WeatherApp() {
 
   async function loadInfo(city = 'London') {
     try {
-      // const request = await fetch('https://api.openweathermap.org/geo/1.0/direct?q=London&appid=${process.env.REACT_APP_KEY}');
-      // const request = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${process.env.REACT_APP_KEY}`);
+      // const request = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=London&appid=${process.env.REACT_APP_KEY}`);
       // const request = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${process.env.REACT_APP_KEY}`);
       const request = await fetch(`${process.env.REACT_APP_URL}q=${city}&appid=${process.env.REACT_APP_KEY}`);
 
@@ -251,3 +250,12 @@ export default function WeatherApp() {
   );
 }
 ```
+# Mostrar info recibida
+```
+return (
+  <>
+    <WeatherForm onChangeCity={handleChangeCity}/>
+    {/* <div>{weather && weather[0].name}</div> */}
+    <div>{weather && weather[0]?.name}</div>
+  </>
+);```

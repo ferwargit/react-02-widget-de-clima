@@ -29,7 +29,8 @@ export default function WeatherApp() {
   return (
     <>
       <WeatherForm onChangeCity={handleChangeCity}/>
-      <div>Info</div>
+      {/* <div>{weather && weather[0].name}</div> */}
+      <div>{weather && weather[0]?.name}</div>
     </>
   );
 }
