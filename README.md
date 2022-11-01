@@ -295,3 +295,29 @@ export default function WeatherApp() {
   );
 }
 ```
+# useEffect
+Si quiero que se cargue una ciudad por defecto cuando se inicia la aplicacion.
+1.-Tenemos la posibilidad de ejecutar codigo cada vez que se carga la página o se crea un componente. 
+2.-Cada vez que existe un renderizado o render de todo el estado de l aplicación.
+3.-Cuando el componente se destruye
+useEffect() es una funcion que espera recibir un callback, simplemente otra función.
+Tiene 2 parámetros,  
+1.-La función callback que va a ejecutar y el  
+2do parametro es un arreglo de dependencias.
+```jsx
+useEffect(() => {
+
+}, []);
+```
+1.-Cuando se carga la informacion, si dejo el arreglo vacio quiere decir que solo se va a ejecutar una vez, solo cuando se crea el componente.
+```jsx
+useEffect(() => {
+    loadInfo();
+}, []);
+```
+2.-Quiero que se ejecute cuando algun estado cambie en mi aplicación, en este caso el valor de weather
+```jsx
+useEffect(() => {
+  document.title = `Weather | ${weather?.location.name ?? ""}`;
+}, [weather]);
+```
