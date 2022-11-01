@@ -175,9 +175,7 @@ import WeatherForm from "./WeatherForm";
 export default function WeatherApp() {
   const [weather, setWeather] = useState(null);
 
-  function loadInfo(city = "london") {
-
-	}
+  function loadInfo(city = "london") {}
 
   function handleChangeCity(city) {
     setWeather(null);
@@ -197,23 +195,28 @@ export default function WeatherApp() {
 
 Ahora en loadInfo(city = 'london') hacemos la solicitud http.
 Va hacer async y especificamos con un try-catch.
+
 ```jsx
-async function loadInfo(city = 'london') {
+async function loadInfo(city = "london") {
   try {
-      
-  } catch (error) {
-      
-  }
+  } catch (error) {}
 }
 ```
-Hacemos la solicitud  
+
+Hacemos la solicitud
+
 ```jsx
 const request = await fetch();
 ```
+
 Necesito llamar a las claves
+
 ```jsx
-const request = await fetch(`${process.env.REACT_APP_URL}q=${city}&appid=${process.env.REACT_APP_KEY}`);
+const request = await fetch(
+  `${process.env.REACT_APP_URL}q=${city}&appid=${process.env.REACT_APP_KEY}`
+);
 ```
+
 ```jsx
 import { useState } from "react";
 import WeatherForm from "./WeatherForm";
@@ -221,20 +224,20 @@ import WeatherForm from "./WeatherForm";
 export default function WeatherApp() {
   const [weather, setWeather] = useState(null);
 
-  async function loadInfo(city = 'London') {
+  async function loadInfo(city = "London") {
     try {
       // const request = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=London&appid=${process.env.REACT_APP_KEY}`);
       // const request = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${process.env.REACT_APP_KEY}`);
-      const request = await fetch(`${process.env.REACT_APP_URL}q=${city}&appid=${process.env.REACT_APP_KEY}`);
+      const request = await fetch(
+        `${process.env.REACT_APP_URL}q=${city}&appid=${process.env.REACT_APP_KEY}`
+      );
 
       const json = await request.json();
       // Guardo el json recibido en setWeather
       setWeather(json);
 
       console.log(json);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
 
   function handleChangeCity(city) {
@@ -244,23 +247,27 @@ export default function WeatherApp() {
 
   return (
     <>
-      <WeatherForm onChangeCity={handleChangeCity}/>
+      <WeatherForm onChangeCity={handleChangeCity} />
       <div>Info</div>
     </>
   );
 }
 ```
+
 # Mostrar info recibida
+
 ```jsx
 return (
   <>
-    <WeatherForm onChangeCity={handleChangeCity}/>
+    <WeatherForm onChangeCity={handleChangeCity} />
     {/* <div>{weather && weather[0].name}</div> */}
     <div>{weather && weather[0]?.name}</div>
   </>
 );
 ```
+
 # Con weatherapi.com
+
 ```jsx
 import { useState } from "react";
 import WeatherForm from "./WeatherForm";
@@ -268,18 +275,18 @@ import WeatherForm from "./WeatherForm";
 export default function WeatherApp() {
   const [weather, setWeather] = useState(null);
 
-  async function loadInfo(city = 'London') {
+  async function loadInfo(city = "London") {
     try {
-      const request = await fetch(`${process.env.REACT_APP_URL}&key=${process.env.REACT_APP_KEY}&q=${city}`);
+      const request = await fetch(
+        `${process.env.REACT_APP_URL}&key=${process.env.REACT_APP_KEY}&q=${city}`
+      );
 
       const json = await request.json();
 
       setWeather(json);
 
       console.log(json);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
 
   function handleChangeCity(city) {
@@ -289,35 +296,72 @@ export default function WeatherApp() {
 
   return (
     <>
-      <WeatherForm onChangeCity={handleChangeCity}/>
+      <WeatherForm onChangeCity={handleChangeCity} />
       <div>{weather?.current.temp_c}</div>
     </>
   );
 }
 ```
+
 # useEffect
+
 Si quiero que se cargue una ciudad por defecto cuando se inicia la aplicacion.
-1.-Tenemos la posibilidad de ejecutar codigo cada vez que se carga la página o se crea un componente. 
+1.-Tenemos la posibilidad de ejecutar codigo cada vez que se carga la página o se crea un componente.
 2.-Cada vez que existe un renderizado o render de todo el estado de l aplicación.
 3.-Cuando el componente se destruye
 useEffect() es una funcion que espera recibir un callback, simplemente otra función.
 Tiene 2 parámetros,  
 1.-La función callback que va a ejecutar y el  
 2do parametro es un arreglo de dependencias.
-```jsx
-useEffect(() => {
 
-}, []);
+```jsx
+useEffect(() => {}, []);
 ```
+
 1.-Cuando se carga la informacion, si dejo el arreglo vacio quiere decir que solo se va a ejecutar una vez, solo cuando se crea el componente.
+
 ```jsx
 useEffect(() => {
-    loadInfo();
+  loadInfo();
 }, []);
 ```
+
 2.-Quiero que se ejecute cuando algun estado cambie en mi aplicación, en este caso el valor de weather
+
 ```jsx
 useEffect(() => {
   document.title = `Weather | ${weather?.location.name ?? ""}`;
 }, [weather]);
+```
+
+# Creamos un 3er componente WeatherMainInfo.jsx
+Vamos a sacar datos que necesitamos para la aplicación.
+weather es el objeto json de la respuesta.
+```jsx
+export default function WeatherMainInfo({ weather }) {
+  return(
+		<>
+			<div>{weather?.location.name}</div>
+			<div>{weather?.location.country}</div>
+			<div>
+				<div>
+					<img 
+						src={`http:${weather?.current.condition.icon}`}
+						width="128"
+						alt={weather?.curret.condition.text} 
+					/>
+				</div>
+			</div>
+		</>
+	);
+}
+```
+Montamos el componente
+```jsx
+return (
+  <>
+    <WeatherForm onChangeCity={handleChangeCity} />
+    <WeatherMainInfo weather={weather} />
+  </>
+);
 ```
