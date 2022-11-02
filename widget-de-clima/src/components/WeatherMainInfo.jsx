@@ -11,6 +11,8 @@ export default function WeatherMainInfo({ weather }) {
 						alt={weather?.current.condition.text} 
 					/>
 				</div>
+				<div>{weather?.current.condition.text}</div>
+				<div>{weather?.current.temp_c}°</div>
 			</div>
 		</>
 	);
