@@ -365,4 +365,13 @@ return (
   </>
 );
 ```
-Agregamos mas info
+# Agregamos mas info
+Le agregamos un titulo y al style lo pasamos a un objeto.
+Buscamos la lon y lat y rellenamos con ${} el valor.
+```javascript
+<iframe title='mapa' src={`https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d13138.60879614836!2d${-58.4515931}5!3d${-34.587666}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2sar!4v1667441508469!5m2!1ses-419!2sar`} width="600" height="450" style={{border:0}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+```
+Reemplazamos los valores
+```javascript
+<iframe title='mapa' src={`https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d13138.60879614836!2d${weather?.location.lon}!3d${weather?.location.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2sar!4v1667444931001!5m2!1ses-419!2sar`} width="600" height="450" style={{border:0}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+```
